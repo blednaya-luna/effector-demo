@@ -17,15 +17,15 @@ export const fetchImagesFx =
 
 export const $isLoading = fetchImagesFx.pending;
 
-export const $images = createStore<Image[]>([]).on(
-  fetchImagesFx.doneData,
-  (state, payload) =>
+export const $images = createStore<Image[]>([])
+  .on(fetchImagesFx.doneData, (state, payload) =>
     payload.photos.photo.map((photo) => ({
       id: photo.id,
       title: photo.title,
       src: buildImageSrc(photo),
     })),
-);
+  )
+  .reset(fetchImagesFx.failData);
 
 export const $error = createStore<string | null>(null)
   .on(fetchImagesFx.failData, (state, payload) => payload.message)
